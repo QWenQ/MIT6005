@@ -16,9 +16,11 @@ public class TurtleSoup {
      * @param sideLength length of each side
      */
     public static void drawSquare(Turtle turtle, int sideLength) {
-        for (int i = 0; i < 4; ++i) {
+        final int TURN_AROUNDS = 4;
+        final double STEERING_ANGLE = 90.0;
+        for (int i = 0; i < TURN_AROUNDS; ++i) {
             turtle.forward(sideLength);
-            turtle.turn(90.0);
+            turtle.turn(STEERING_ANGLE);
         }
         // throw new RuntimeException("implement me!");
     }
@@ -34,7 +36,9 @@ public class TurtleSoup {
      */
     public static double calculateRegularPolygonAngle(int sides) {
         // throw new RuntimeException("implement me!");
-        double angle = 180.0 - 360.0 / sides;
+        final double STRAIGHT_ANGLE = 180.0;
+        final double ROUND_ANGLE = 360.0;
+        double angle = STRAIGHT_ANGLE - ROUND_ANGLE / sides;
         return angle;
     }
 
@@ -50,7 +54,9 @@ public class TurtleSoup {
      */
     public static int calculatePolygonSidesFromAngle(double angle) {
         // throw new RuntimeException("implement me!");
-        int sides = (int) Math.round(360.0 / (180.0 - angle));
+        final double STRAIGHT_ANGLE = 180.0;
+        final double ROUND_ANGLE = 360.0;
+        int sides = (int) Math.round(ROUND_ANGLE / (STRAIGHT_ANGLE - angle));
         return sides;
     }
 
@@ -65,10 +71,11 @@ public class TurtleSoup {
      */
     public static void drawRegularPolygon(Turtle turtle, int sides, int sideLength) {
         // throw new RuntimeException("implement me!");
+        final double STRAIGHT_ANGLE = 180.0;
         double angle = TurtleSoup.calculateRegularPolygonAngle(sides);
         for (int i = 0; i < sides; ++i) {
             turtle.forward(sideLength);
-            turtle.turn(180.0 - angle);
+            turtle.turn(STRAIGHT_ANGLE - angle);
         }
         
     }
@@ -96,23 +103,28 @@ public class TurtleSoup {
                                                  int targetX, int targetY) {
 //        throw new RuntimeException("implement me!");
         
+        final double RIGHT_ANGLE = 90.0;
+        final double STRAIGHT_ANGLE = 180.0;
+        final double ROUND_ANGLE = 360.0;
+        
         double theta = Math.atan2(targetY - currentY, targetX - currentX);
+        
         
         double angle = Math.toDegrees(theta);
         
-        if (angle >= 0.0 && angle <= 90.0) {
-            angle = 90.0 - angle;
+        if (angle >= 0.0 && angle <= RIGHT_ANGLE) {
+            angle = RIGHT_ANGLE - angle;
         }
-        else if (angle > 90.0 && angle <= 180.0) {
-            angle = 180.0 + angle;
+        else if (angle > RIGHT_ANGLE && angle <= STRAIGHT_ANGLE) {
+            angle = STRAIGHT_ANGLE + angle;
         }
         else {
-            angle = Math.abs(angle) + 90.0;
+            angle = Math.abs(angle) + RIGHT_ANGLE;
         }
         
         double ans = angle - currentHeading;
         if (ans < 0) {
-            ans += 360.0;
+            ans += ROUND_ANGLE;
         }
         
         return ans;
@@ -156,11 +168,14 @@ public class TurtleSoup {
      */
     public static void drawPersonalArt(Turtle turtle) {
 //        throw new RuntimeException("implement me!");
-        final int LINES = 800;
-        int sideLength = 10;
-        int factor = 1;
+        final int LINES = 450;
+        final double STEERING_ANGLE = 90.5;
+        final int COLOR_TYPES = 4;
+        int sideLength = 1;
+        int stride = 1;
+        
         for (int i = 0; i < LINES; ++i) {
-            int remain = i % 4;
+            int remain = i % COLOR_TYPES;
             if (remain == 0) {
                 turtle.color(PenColor.BLUE);
             }
@@ -174,8 +189,8 @@ public class TurtleSoup {
                 turtle.color(PenColor.MAGENTA);
             }
             turtle.forward(sideLength);
-            turtle.turn(91);
-            sideLength += factor;
+            turtle.turn(STEERING_ANGLE);
+            sideLength += stride;
         }
     }
 
@@ -188,18 +203,9 @@ public class TurtleSoup {
      */
     public static void main(String args[]) {
         DrawableTurtle turtle = new DrawableTurtle();
-
-//        drawSquare(turtle, 40);
-//        turtle.color(PenColor.MAGENTA);
-//        TurtleSoup.drawRegularPolygon(turtle, 20, 40);
-//        turtle.color(PenColor.RED);
-//        TurtleSoup.drawRegularPolygon(turtle, 18, 40);
-//        turtle.color(PenColor.CYAN);
-//        TurtleSoup.drawRegularPolygon(turtle, 16, 40);
         
         TurtleSoup.drawPersonalArt(turtle);
         
-
         // draw the window
         turtle.draw();
     }
